@@ -5,14 +5,14 @@ import 'package:sqflite/sqflite.dart';
 class DatabaseService {
   static late Database _client;
   static String dbName = "bitacora.db";
-  static Future<void> init({String? customDBName}) async {
+  static Future<void> init({Database? customDB}) async {
     WidgetsFlutterBinding.ensureInitialized();
-    var dbDir = (await getExternalStorageDirectory())!;
 
-    if (customDBName == null) {
+    if (customDB == null) {
+      var dbDir = (await getExternalStorageDirectory())!;
       _client = await openDatabase("${dbDir.path}/$dbName");
     } else {
-      _client = await openDatabase("${dbDir.path}/$customDBName");
+      _client = customDB;
     }
 
     _client.execute(
@@ -26,13 +26,13 @@ class DatabaseService {
     _client.execute(
       """CREATE TABLE IF NOT EXISTS 
                             activity (id integer primary key, 
-                              name text NOT NULL, description text, 
+                              name text NOT NULL, description text NOT NULL, 
                                 date integer NOT NULL, 
                                   experience real NOT NULL,
-                                    completed boolean,
+                                    completed boolean NOT NULL,
                                       deleted_at integer,
                                         category_id integer NOT NULL,
-                                          FOREIGN KEY (category_id) references category(id)) ON DELETE CASCADE""",
+                                          FOREIGN KEY (category_id) references category(id))""",
     );
 
     _client.execute(
@@ -53,9 +53,9 @@ class DatabaseService {
     _client.execute(
       """CREATE TABLE IF NOT EXISTS weather(id integer primary key,
                                                             weather_status text,
-                                                              current_temperature integer,
-                                                                max_temperature integer,
-                                                                  min_temperature integer,
+                                                              current_temperature real,
+                                                                max_temperature real,
+                                                                  min_temperature real,
                                                                     wind_speed integer,
                                                                       activity_id integer,
                                                                       FOREIGN KEY(activity_id) references activity(id))""",
@@ -63,10 +63,6 @@ class DatabaseService {
   }
 
   static Database getDbClient() {
-    return _client;
-  }
-
-  static get client {
     return _client;
   }
 }

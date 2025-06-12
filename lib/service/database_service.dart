@@ -52,13 +52,14 @@ class DatabaseService {
 
     _client.execute(
       """CREATE TABLE IF NOT EXISTS weather(id integer primary key,
-                                                            weather_status text,
-                                                              current_temperature real,
-                                                                max_temperature real,
-                                                                  min_temperature real,
-                                                                    wind_speed integer,
-                                                                      activity_id integer,
-                                                                      FOREIGN KEY(activity_id) references activity(id))""",
+                                                            status text NOT NULL,
+                                                              description text NOY NULL,
+                                                                current_temperature real NOT NULL,
+                                                                  max_temperature real,
+                                                                    min_temperature real,
+                                                                      wind_speed integer,
+                                                                        activity_id integer,
+                                                                        FOREIGN KEY(activity_id) references activity(id))""",
     );
   }
 

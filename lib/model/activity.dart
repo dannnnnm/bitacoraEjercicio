@@ -7,18 +7,29 @@ import 'package:bitacora_ejercicios/utilTypes/json_map.dart';
 
 class Activity {
   Activity(
-   this.name,
+    this.name,
     this.description,
     this.location,
     this.category,
     this.weather,
-    this.experience
-  ) : date = DateTime.now(),completed=false;
+    this.experience,
+  ) : date = DateTime.now(),
+      completed = false;
 
-  
   //Activity.loadWithoutImage(this.id, this.name,this.description,this.location,this.category,this.date, this.experience);
-  Activity.load(this.id, this.name,this.description,this.location,this.category,this.weather,this.date,this.experience,this.evidence,this.completed);
-  int id=0;
+  Activity.load(
+    this.id,
+    this.name,
+    this.description,
+    this.location,
+    this.category,
+    this.weather,
+    this.date,
+    this.experience,
+    this.evidence,
+    int completedNum,
+  ) : completed = completedNum > 0;
+  int id = 0;
   double experience;
   String name, description;
   Location location;
@@ -29,22 +40,22 @@ class Activity {
   bool completed;
   Weather weather;
 
-  JSONMap toJSon(){
-    JSONMap json={
-      "name":name,
-      "description":description,
-      "experience":experience,
-      "date":date.millisecondsSinceEpoch,
-      "deleted_at":deletedAt?.millisecondsSinceEpoch,
-      "completed":completed
+  JSONMap toJSon() {
+    JSONMap json = {
+      "name": name,
+      "description": description,
+      "experience": experience,
+      "date": date.millisecondsSinceEpoch,
+      "deleted_at": deletedAt?.millisecondsSinceEpoch,
+      "completed": completed ? 1 : 0,
     };
-    if (id!=0){
-      json["id"]=id;
+    if (id != 0) {
+      json["id"] = id;
     }
-    if (category.id!=0){
-      json["category_id"]=category.id;
+    if (category.id != 0) {
+      json["category_id"] = category.id;
     }
-    if (category.id==0){
+    if (category.id == 0) {
       throw UnregisteredComponentException("Activity", "Category");
     }
 
@@ -58,6 +69,5 @@ class Activity {
     // }
 
     return json;
-
   }
 }

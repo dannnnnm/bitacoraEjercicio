@@ -17,72 +17,92 @@ import 'package:bitacora_ejercicios/utilTypes/option.dart';
 import 'package:bitacora_ejercicios/utilTypes/result.dart';
 import 'package:sqflite/sqflite.dart';
 
-typedef ActivityResultMap=Map<String,Object?>;
-class ActivityRepository extends BaseRepository<Activity,Exception>{
-  ActivityRepository():super("activity");
-  CategoryRepository categoryRepository=CategoryRepository();
-  EvidenceRepository evidenceRepository=EvidenceRepository();
-  LocationRepository locationRepository=LocationRepository();
-  WeatherRepository weatherRepository=WeatherRepository();
+typedef ActivityResultMap = Map<String, Object?>;
+
+class ActivityRepository extends BaseRepository<Activity, Exception> {
+  ActivityRepository() : super("activity");
+  CategoryRepository categoryRepository = CategoryRepository();
+  EvidenceRepository evidenceRepository = EvidenceRepository();
+  LocationRepository locationRepository = LocationRepository();
+  WeatherRepository weatherRepository = WeatherRepository();
 
   @override
-  Future<Option<Activity>> findOneByID(int id, {DatabaseExecutor? executor}) async{
-    executor??=super.dbClient;
-    var rawResults=await executor.query(tableName,where: "id=?",whereArgs: [id]);
-    if (rawResults.isEmpty){
+  Future<Option<Activity>> findOneByID(
+    int id, {
+    DatabaseExecutor? executor,
+  }) async {
+    executor ??= super.dbClient;
+    var rawResults = await executor.query(
+      tableName,
+      where: "id=?",
+      whereArgs: [id],
+    );
+    if (rawResults.isEmpty) {
       return None();
     }
-    var rawResult=rawResults.first;
-    var result=fromResult(rawResult);
+    var rawResult = rawResults.first;
+    var result = fromResult(rawResult);
     return Some(result);
   }
 
-
   @override
-  Future<Activity> saveOne(Activity activity, {DatabaseExecutor? executor}) async {
-    executor??=super.dbClient;
-    
+  Future<Activity> saveOne(
+    Activity activity, {
+    DatabaseExecutor? executor,
+  }) async {
+    executor ??= super.dbClient;
+
     late Activity saved;
-      try{
-        var transaction=await executor.database.transaction((tx) async{
-        var categoryPersist=activity.category;
-        if (categoryPersist.id==0){
-          categoryPersist=await categoryRepository.saveOne(activity.category, executor: tx);
-          activity.category=categoryPersist;
+    try {
+      var transaction = await executor.database.transaction((tx) async {
+        var categoryPersist = activity.category;
+        if (categoryPersist.id == 0) {
+          categoryPersist = await categoryRepository.saveOne(
+            activity.category,
+            executor: tx,
+          );
+          activity.category = categoryPersist;
         }
 
-        var saveID=await tx.insert(tableName, activity.toJSon());
+        var saveID = await tx.insert(tableName, activity.toJSon());
 
-        saved=(await findOneByID(saveID)).unwrap();
+        saved = (await findOneByID(saveID)).unwrap();
 
-        activity.location.activityID=saved.id;
-        var locationPersist=await locationRepository.saveOne(activity.location, executor: tx);
-        saved.location=locationPersist;
+        activity.location.activityID = saved.id;
+        var locationPersist = await locationRepository.saveOne(
+          activity.location,
+          executor: tx,
+        );
+        saved.location = locationPersist;
 
         EvidenceImage? imagePersist;
-        if (activity.evidence!=null){
-          imagePersist!.activityID=saved.id;
-          imagePersist=await evidenceRepository.saveOne(activity.evidence!, executor: tx);
-          saved.evidence=imagePersist;
+        if (activity.evidence != null) {
+          imagePersist!.activityID = saved.id;
+          imagePersist = await evidenceRepository.saveOne(
+            activity.evidence!,
+            executor: tx,
+          );
+          saved.evidence = imagePersist;
         }
 
-        activity.weather.activityID=saved.id;
-        Weather weatherPersist=await weatherRepository.saveOne(activity.weather);
-        saved.weather=weatherPersist;
-
-        
+        activity.weather.activityID = saved.id;
+        Weather weatherPersist = await weatherRepository.saveOne(
+          activity.weather,
+        );
+        saved.weather = weatherPersist;
       });
 
-    
       return saved;
-    } on Exception catch(e){
+    } on Exception catch (e) {
       rethrow;
     }
-
   }
 
   @override
-  Future<Result<Activity, Exception>> update(Activity activity, {DatabaseExecutor? executor}) async{
+  Future<Result<Activity, Exception>> update(
+    Activity activity, {
+    DatabaseExecutor? executor,
+  }) async {
     try {
       if (executor != null) {
         throw UnsupportedParamException(
@@ -123,18 +143,18 @@ class ActivityRepository extends BaseRepository<Activity,Exception>{
 
   @override
   Activity fromResult(Map<String, Object?> result) {
-    int id=result["id"] as int;
-    String name=result["name"] as String;
-    String description=result["description"] as String;
-    double experience=result["experience"] as double;
-    int dateAsUnix=result["date"] as int;
-    DateTime date=DateTime.fromMillisecondsSinceEpoch(dateAsUnix);
+    int id = result["id"] as int;
+    String name = result["name"] as String;
+    String description = result["description"] as String;
+    double experience = result["experience"] as double;
+    int dateAsUnix = result["date"] as int;
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(dateAsUnix);
 
-    Category category=result["category"] as Category;
-    Location location=result["location"] as Location;
-    EvidenceImage evidence=result["evidence"] as EvidenceImage;
-    Weather weather=result["weather"] as Weather;
-    bool completed=result["completed"] as bool;
+    Category category = result["category"] as Category;
+    Location location = result["location"] as Location;
+    EvidenceImage evidence = result["evidence"] as EvidenceImage;
+    Weather weather = result["weather"] as Weather;
+    int completed = result["completed"] as int;
 
     return Activity.load(
       id,
@@ -149,10 +169,4 @@ class ActivityRepository extends BaseRepository<Activity,Exception>{
       completed,
     );
   }
-
-  
-  
-  
-
-
 }

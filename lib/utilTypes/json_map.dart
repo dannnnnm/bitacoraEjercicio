@@ -1,0 +1,1 @@
+typedef JSONMap=Map<String,dynamic>;

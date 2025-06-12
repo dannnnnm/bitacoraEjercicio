@@ -12,9 +12,11 @@ class MainScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     var controller=Get.put(this.controller);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: (){},child: Icon(Icons.add),),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        controller.modTest();
+      },child: Icon(Icons.add),),
       body: Obx(()=>ListView(
-        children: controller.activities.map((activity)=>ListTile(leading: Icon(Icons.gas_meter),title: Text(activity.name),subtitle: Text(activity.description),)).toList())),
+        children: controller.activities.map((activity)=>ListTile(leading: Icon(Icons.gas_meter),title: Text(activity.name),subtitle: Text(activity.description),trailing: Text(activity.category.name),)).toList())),
       appBar: AppBar(
         title: Text("Ejercicios"),
         backgroundColor: Get.theme.colorScheme.inversePrimary,

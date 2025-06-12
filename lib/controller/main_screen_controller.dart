@@ -1,7 +1,9 @@
 import 'package:bitacora_ejercicios/model/activity.dart';
 import 'package:bitacora_ejercicios/model/category.dart';
+import 'package:bitacora_ejercicios/model/location.dart';
+import 'package:bitacora_ejercicios/model/weather.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+
 
 class MainScreenController extends GetxController{
   MainScreenController();
@@ -18,8 +20,8 @@ class MainScreenController extends GetxController{
   void _loadActivities(){
     var mockLoadActivities=Future.delayed(Duration(seconds: 2), () async{
       activities.addAll([
-        Activity("Correr", "Salir a correr al cerro Ñielol", Category("a")),
-        Activity("Nadar", "Nadar en la piscina de la UFRO", Category("a"))
+        Activity("Correr", "Salir a correr al cerro Ñielol",Location(latitude: 0.0, longitude: 0.0), Category("a"),Weather.simple("RAINY","literally a blibical flood",32),10.0),
+        Activity("Nadar", "Nadar en la piscina de la UFRO",Location(latitude: 0.0, longitude: 0.0), Category("a"),Weather.simple("RAINY","literally a blibical flood",32),10.0)
       ]);
       activities.refresh();
     });
@@ -28,5 +30,13 @@ class MainScreenController extends GetxController{
       ready.value=true;
     });
   }
+
+  void modTest(){
+    activities[0].name="No hacer nada";
+    activities[0].category.name="Ninguna!";
+    activities.refresh();
+  }
+
+
 
 }

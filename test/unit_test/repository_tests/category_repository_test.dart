@@ -53,4 +53,21 @@ void main() {
 
     expect(saved.toJson(), isNot(saved2.toJson()));
   });
+
+  test("findByNameLike busca por nombres parciales", () async {
+    Category category = Category("super categoria");
+    var saved = await categoryRepository.saveOne(category);
+    var found=await categoryRepository.findByNameLike("super");
+    expect(found.isEmpty, false);
+  });
+
+  test("findByNameLike no es vulnerable a inyeccion sql", () async {
+    Category category = Category("super categoria 'y");
+    Category category2 = Category("SUper categoria 'x`");
+    var saved = await categoryRepository.saveOne(category);
+    var saved2=await categoryRepository.saveOne(category2);
+    var found=await categoryRepository.findByNameLike("super");
+    expect(found.length, 2);
+    expect(saved.name, category.name);
+  });
 }

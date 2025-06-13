@@ -45,7 +45,7 @@ class CategoryRepository extends BaseRepository<Category, Exception>{
 
   Future<List<Category>> findByNameLike(String partialName, {DatabaseExecutor? executor}) async{
     executor??=super.dbClient;
-    List<CategoryResultMap> found=await executor.query(tableName, where: "name LIKE ?",whereArgs: [partialName]);
+    List<CategoryResultMap> found=await executor.query(tableName, where: "name LIKE ?",whereArgs: ["%$partialName%"]);
     var results=<Category>[];
     for (var entry in found) {
       results.add(fromResult(entry));

@@ -117,4 +117,18 @@ void main() {
     savedjson.remove("id");
     expect(w1.toDBJson(), savedjson);
   });
+
+  test("Actualizar cambia los datos", () async {
+    var w1 = Weather("RAINY", "REAL MOIST", 2.1, 0.1, 4.5, 200);
+    w1.activityID = 2;
+    var saved1 = await weatherRepository.saveOne(w1);
+    saved1.maxTemperatureCelsius=299;
+    saved1.minTemperatureCelsius=19;
+    saved1.currentTemperatureCelsius=70;
+    saved1.weatherStatus="SUNNNY";
+    saved1.weatherDescription="vitamin D";
+    var updatedSaved=(await weatherRepository.update(saved1)).unwrap();
+    
+    expect(updatedSaved.toDBJson(), saved1.toDBJson());
+  });
 }

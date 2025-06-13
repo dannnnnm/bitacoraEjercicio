@@ -63,6 +63,16 @@ void main() {
     expect(saved2.id, 2);
   });
 
+  test("guardar 2 guarda datos distintos", () async {
+    Location location = Location(latitude: 20.0014, longitude: 23.45354);
+    Location location2 = Location(latitude: 204.0014, longitude: 3.45354);
+    location.activityID = 1;
+    location2.activityID = 2;
+    var saved = await locationRepository.saveOne(location);
+    var saved2 = await locationRepository.saveOne(location2);
+    expect(saved2.toJson(),isNot(saved.toJson()));
+  });
+
   test("guardar mantiene los datos", () async {
     Location location = Location(latitude: 20.0014, longitude: 23.45354);
     location.activityID = 1;
@@ -70,5 +80,16 @@ void main() {
     var savedJson = saved.toJson();
     savedJson.remove("id");
     expect(savedJson, location.toJson());
+  });
+
+  test("actualizar mantiene los datos", () async {
+    Location location = Location(latitude: 20.0014, longitude: 23.45354);
+    location.activityID = 1;
+    var saved = await locationRepository.saveOne(location);
+    saved.longitude=0.1;
+    saved.latitude=55.4;
+    var updated=(await locationRepository.update(saved)).unwrap();
+    
+    expect(updated.toJson(), saved.toJson());
   });
 }

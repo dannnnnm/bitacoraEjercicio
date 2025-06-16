@@ -146,6 +146,25 @@ void main(){
     expect(savedUpdated.evidence, isNot(null));
   });
 
+  test("Guardar cambia actividad",() async{
+    Activity activity = Activity(
+      "Caminar",
+      "Salir a caminar",
+      Location(latitude: 0.21, longitude: 0.22),
+      Category("Piernas"),
+      Weather.simple("RAINY", "Slightly rainy. Maybe frogs", 10.6),
+      35.0,
+    );
+    
+
+
+    var saved=await activityRepository.saveOne(activity);
+    var oldCategory=saved.category;
+    saved.category=Category("Nueva");
+    var savedUpdated=(await activityRepository.update(saved)).unwrap();
+    expect(savedUpdated.category.toJson(), isNot(oldCategory.toJson()));
+  });
+
 
   
 }

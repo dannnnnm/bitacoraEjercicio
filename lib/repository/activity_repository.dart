@@ -146,8 +146,12 @@ class ActivityRepository extends BaseRepository<Activity, Exception> {
       late Activity saved;
       var transaction = await super.dbClient.transaction((tx) async {
         if (activity.category.id == 0) {
-          categoryRepository.saveOne(activity.category, executor: tx);
+          var newCategory=await categoryRepository.saveOne(activity.category, executor: tx);
+          activity.category.id=newCategory.id;
         }
+        // if (activity.category.id!=existing.category.id){
+          
+        // }
 
         if (activity.date.millisecondsSinceEpoch !=
             existing.date.millisecondsSinceEpoch) {

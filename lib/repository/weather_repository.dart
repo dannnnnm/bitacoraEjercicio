@@ -57,7 +57,7 @@ class WeatherRepository extends BaseRepository<Weather, Exception> {
   Future<Weather> saveOne(Weather weather, {DatabaseExecutor? executor}) async {
     executor ??= super.dbClient;
     int lastId = await executor.insert(tableName, weather.toDBJson());
-    Weather savedWeather = (await findOneByID(lastId)).unwrap();
+    Weather savedWeather = (await findOneByID(lastId,executor:executor)).unwrap();
     return savedWeather;
   }
 
@@ -79,5 +79,25 @@ class WeatherRepository extends BaseRepository<Weather, Exception> {
     );
     var found = await findOneByID(weather.id);
     return Ok(found.unwrap());
+  }
+
+
+  Future<Option<Weather>> findByActivityID(
+    int activityID, {
+    DatabaseExecutor? executor,
+  }) async {
+    executor ??= super.dbClient;
+    var results = await executor.query(
+      tableName,
+      where: "activity_id=?",
+      whereArgs: [activityID],
+    );
+    if (results.isEmpty) {
+      return None();
+    }
+
+    WeatherResultMap result = results.first;
+    var location = fromResult(result);
+    return Some(location);
   }
 }

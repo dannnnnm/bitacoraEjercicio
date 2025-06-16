@@ -1,5 +1,3 @@
-import 'dart:nativewrappers/_internal/vm/lib/math_patch.dart';
-
 import 'package:bitacora_ejercicios/exception/no_id_exception.dart';
 import 'package:bitacora_ejercicios/exception/unregistered_component_exception.dart';
 import 'package:bitacora_ejercicios/exception/unsupported_param_exception.dart';
@@ -40,8 +38,27 @@ class ActivityRepository extends BaseRepository<Activity, Exception> {
     if (rawResults.isEmpty) {
       return None();
     }
+
+    
     var rawResult = rawResults.first;
-    var result = fromResult(rawResult);
+    var modifiableRawResult=Map.of(rawResult);
+    var category=await categoryRepository.findOneByID(rawResult["category_id"] as int,executor: executor);
+    modifiableRawResult["category"]=category.unwrap();
+    var location=await locationRepository.findByActivityID(id,executor: executor);
+    modifiableRawResult["location"]=location.unwrap();
+    var evidence = await evidenceRepository.findByActivityID(id, executor: executor);
+    switch (evidence){
+      case Some(value:var ev): 
+            modifiableRawResult["evidence"]=ev;
+            break;
+      case None():
+            modifiableRawResult["evidence"]=null;
+            break;
+    }
+
+    var weather=await weatherRepository.findByActivityID(id,executor: executor);
+    modifiableRawResult["weather"]=weather.unwrap();
+    var result = fromResult(modifiableRawResult);
     return Some(result);
   }
 
@@ -64,36 +81,44 @@ class ActivityRepository extends BaseRepository<Activity, Exception> {
           activity.category = categoryPersist;
         }
 
+        print(activity.category.id);
+
         var saveID = await tx.insert(tableName, activity.toJSon());
 
-        saved = (await findOneByID(saveID)).unwrap();
+        //saved = (await findOneByID(saveID,executor:tx)).unwrap();
 
-        activity.location.activityID = saved.id;
+      
+
+        activity.location.activityID = saveID;
         var locationPersist = await locationRepository.saveOne(
           activity.location,
           executor: tx,
         );
-        saved.location = locationPersist;
+        //saved.location = locationPersist;
 
         EvidenceImage? imagePersist;
         if (activity.evidence != null) {
-          imagePersist!.activityID = saved.id;
+          imagePersist!.activityID = saveID;
           imagePersist = await evidenceRepository.saveOne(
             activity.evidence!,
             executor: tx,
           );
-          saved.evidence = imagePersist;
+          //saved.evidence = imagePersist;
         }
 
-        activity.weather.activityID = saved.id;
+        activity.weather.activityID = saveID;
         Weather weatherPersist = await weatherRepository.saveOne(
           activity.weather,
+          executor: tx
         );
-        saved.weather = weatherPersist;
+        //saved.weather = weatherPersist;
+        saved = (await findOneByID(saveID,executor:tx)).unwrap();
       });
 
+      
+
       return saved;
-    } on Exception catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -152,7 +177,7 @@ class ActivityRepository extends BaseRepository<Activity, Exception> {
 
     Category category = result["category"] as Category;
     Location location = result["location"] as Location;
-    EvidenceImage evidence = result["evidence"] as EvidenceImage;
+    EvidenceImage? evidence = result["evidence"] as EvidenceImage?;
     Weather weather = result["weather"] as Weather;
     int completed = result["completed"] as int;
 

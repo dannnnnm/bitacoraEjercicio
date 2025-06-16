@@ -16,7 +16,7 @@ class LocationRepository extends BaseRepository<Location, Exception> {
   }) async {
     executor ??= super.dbClient;
     int lastId = await executor.insert(tableName, location.toJson());
-    Location savedEvidence = (await findOneByID(lastId)).unwrap();
+    Location savedEvidence = (await findOneByID(lastId,executor: executor)).unwrap();
     return savedEvidence;
   }
 
@@ -74,4 +74,26 @@ class LocationRepository extends BaseRepository<Location, Exception> {
     var found = await findOneByID(location.id);
     return Ok(found.unwrap());
   }
+
+
+  Future<Option<Location>> findByActivityID(
+    int activityID, {
+    DatabaseExecutor? executor,
+  }) async {
+    executor ??= super.dbClient;
+    var results = await executor.query(
+      tableName,
+      where: "activity_id=?",
+      whereArgs: [activityID],
+    );
+    if (results.isEmpty) {
+      return None();
+    }
+
+    LocationResultMap result = results.first;
+    var location = fromResult(result);
+    return Some(location);
+  }
 }
+
+

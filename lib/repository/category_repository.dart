@@ -12,7 +12,7 @@ class CategoryRepository extends BaseRepository<Category, Exception>{
   Future<Category> saveOne(Category category, {DatabaseExecutor? executor})async{
     executor??=super.dbClient;
     int lastId=await executor.insert(tableName, category.toJson());
-    Category savedCategory=(await findOneByID(lastId)).unwrap();
+    Category savedCategory=(await findOneByID(lastId,executor: executor)).unwrap();
     return savedCategory;
   }
 

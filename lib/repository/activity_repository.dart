@@ -155,8 +155,13 @@ class ActivityRepository extends BaseRepository<Activity, Exception> {
           activity.date = existing.date;
         }
 
+        if (activity.evidence!=null){
+          activity.evidence!.activityID=activity.id;
+          await evidenceRepository.saveOne(activity.evidence!,executor: tx);
+        }
+
         // ignore: unused_local_variable
-        var result = tx.update(tableName, activity.toJSon());
+        var result = tx.update(tableName, activity.toJSon(),where: "id=?",whereArgs:[existing.id]);
         saved = (await findOneByID(activity.id, executor: tx)).unwrap();
       });
 
@@ -164,6 +169,34 @@ class ActivityRepository extends BaseRepository<Activity, Exception> {
     } on Exception catch (e) {
       rethrow;
     }
+  }
+
+  Future<List<Activity>> findAll({DatabaseExecutor? executor}) async{
+    executor??=super.dbClient;
+    var foundActivities=await executor.query(tableName,where: "deleted_at IS NULL");
+    var activityList=<Activity>[];
+    for (var result in foundActivities) {
+
+      activityList.add((await findOneByID(result["id"] as int )).unwrap());
+    }
+    return activityList;
+  }
+
+  Future<Result<void,Exception>> setDeleted(int id,{DatabaseExecutor? executor}) async{
+    if (id==0){
+      return Err(NoIDException());
+    }
+    executor??=super.dbClient;
+    var found=await findOneByID(id);
+    switch (found) {
+      case Some(value: var existing):
+        existing.deletedAt=DateTime.now();
+        return update(existing);
+        
+      case None():
+        return Err(Exception("ID not found"));
+    }
+
   }
 
   @override

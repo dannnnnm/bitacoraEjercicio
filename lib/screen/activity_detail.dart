@@ -19,25 +19,22 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
     isCompleted = widget.activity.completed;
   }
 
-@override
-Widget build(BuildContext context) {
-  final activity = widget.activity;
+  @override
+  Widget build(BuildContext context) {
+    final activity = widget.activity;
 
-  return Scaffold(
-    backgroundColor: Colors.grey[50],
-    appBar: AppBar(
-      title: const Text('Detalle de Actividad'),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      foregroundColor: Colors.black87,
-    ),
-    body: SafeArea(
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        padding: const EdgeInsets.all(20),
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        title: const Text('Detalle de Actividad'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.black87,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Título y badge
             Row(
@@ -46,10 +43,10 @@ Widget build(BuildContext context) {
                 Expanded(
                   child: Text(
                     activity.name,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
                 if (isCompleted)
@@ -86,7 +83,7 @@ Widget build(BuildContext context) {
               icon: Icons.wb_sunny,
               iconColor: Colors.orange,
               title: 'Clima',
-              subtitle: '${activity.weather.name}',
+              subtitle: activity.weather.toString(),
             ),
             const SizedBox(height: 24),
 
@@ -95,23 +92,17 @@ Widget build(BuildContext context) {
               'Descripción',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: Colors.black87,
                   ),
             ),
             const SizedBox(height: 8),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text(
-                  activity.description,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey[700],
-                        height: 1.5,
-                      ),
-                ),
-              ),
+            Text(
+              activity.description,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey[700],
+                    height: 1.5,
+                  ),
             ),
-
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
 
             // Botón marcar como completado
             SizedBox(
@@ -173,9 +164,8 @@ Widget build(BuildContext context) {
           ],
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildInfoRow({
     required IconData icon,
@@ -189,7 +179,6 @@ Widget build(BuildContext context) {
           width: 48,
           height: 48,
           decoration: BoxDecoration(
-            // ignore: deprecated_member_use
             color: iconColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(24),
           ),

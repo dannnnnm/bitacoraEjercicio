@@ -34,6 +34,8 @@ class Weather {
   int windSpeedKmh = 0;
   int activityID;
 
+  get name => null;
+
   JSONMap toDBJson() {
     JSONMap json = {
       "status": weatherStatus,

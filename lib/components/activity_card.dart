@@ -1,6 +1,8 @@
+import 'package:bitacora_ejercicios/colors/app_colors.dart';
 import 'package:bitacora_ejercicios/model/activity.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
+import '../colors/app_text_styles.dart';
 
 class ActivityCard extends StatelessWidget {
   final Activity activity;
@@ -47,39 +49,5 @@ class ActivityCard extends StatelessWidget {
   }
 }
 
-class AppColors {
-  static const primaryText = Color(0xFF0F1419);
-  static const secondaryText = Color(0xFF59728C);
-  static const cardBackground = Color(0xFFF9F9F9);
-  static const chipBackground = Color(0xFFE8EDF2);
-}
 
-class AppTextStyles {
-  static const header = TextStyle(
-    color: AppColors.primaryText,
-    fontSize: 18,
-    fontWeight: FontWeight.w700,
-    height: 1.28,
-  );
 
-  static const taskTitle = TextStyle(
-    color: AppColors.primaryText,
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    height: 1.50,
-  );
-
-  static const taskTime = TextStyle(
-    color: AppColors.secondaryText,
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
-    height: 1.50,
-  );
-
-  static const chipText = TextStyle(
-    color: AppColors.primaryText,
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    height: 1.50,
-  );
-}

@@ -5,8 +5,9 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
+// ignore: must_be_immutable
 class MainScreen extends StatelessWidget{
-  MainScreen();
+  MainScreen({super.key});
   MainScreenController controller=MainScreenController();
   @override
   Widget build(BuildContext context) {

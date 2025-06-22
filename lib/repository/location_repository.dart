@@ -46,12 +46,14 @@ class LocationRepository extends BaseRepository<Location, Exception> {
     int id = result["id"] as int;
     double latitude = result["latitude"] as double;
     double longitude = result["longitude"] as double;
+    double altitude = result["altitude"] as double;
     int activityID = result["activity_id"] as int;
     return Location.load(
       id,
       activityID,
       latitude: latitude,
       longitude: longitude,
+      altitude: altitude,
     );
   }
 

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DatabaseService {
   static late Database _client;
@@ -9,8 +12,17 @@ class DatabaseService {
     WidgetsFlutterBinding.ensureInitialized();
 
     if (customDB == null) {
-      var dbDir = (await getExternalStorageDirectory())!;
-      _client = await openDatabase("${dbDir.path}/$dbName");
+      Directory dbDir;
+      if (!Platform.isAndroid){
+        sqfliteFfiInit();
+        dbDir=(await getApplicationDocumentsDirectory())!;
+        _client = await databaseFactoryFfi.openDatabase("${dbDir.path}/$dbName");
+      }
+      else{
+        dbDir= (await getExternalStorageDirectory())!;
+        _client = await openDatabase("${dbDir.path}/$dbName");
+      }
+      
     } else {
       _client = customDB;
     }

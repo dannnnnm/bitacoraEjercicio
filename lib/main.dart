@@ -1,8 +1,10 @@
 import 'package:bitacora_ejercicios/layout/home_layout.dart';
+import 'package:bitacora_ejercicios/service/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+void main() async{
+  await DatabaseService.init();
   runApp(const MyApp());
 }
 

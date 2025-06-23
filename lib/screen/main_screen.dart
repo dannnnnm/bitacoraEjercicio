@@ -3,6 +3,7 @@ import 'package:bitacora_ejercicios/controller/main_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+const String newActivityFAB="newActivityFAB";
 // ignore: must_be_immutable
 class MainScreen extends StatelessWidget {
   MainScreen({super.key});
@@ -14,8 +15,9 @@ class MainScreen extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        key: const Key(newActivityFAB),
         onPressed: () {
-          controller.modTest();
+          controller.toAddActivity();
         },
         child: const Icon(Icons.add),
       ),

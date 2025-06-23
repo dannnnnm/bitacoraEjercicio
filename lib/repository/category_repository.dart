@@ -53,6 +53,18 @@ class CategoryRepository extends BaseRepository<Category, Exception>{
     return results;
   }
 
+  Future<List<Category>> findAll({DatabaseExecutor? executor}) async{
+    executor??=super.dbClient;
+    List<CategoryResultMap> found=await executor.query(tableName);
+    var results=<Category>[];
+    for (var entry in found) {
+      results.add(fromResult(entry));
+    }
+    return results;
+  }
+
+  
+
 
 
 

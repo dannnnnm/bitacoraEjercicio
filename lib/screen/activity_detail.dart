@@ -167,7 +167,10 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
               const SizedBox(height: 12),
               Center(
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    activity.completed=false;
+
+                    await ActivityRepository().saveOne(activity);
                     setState(() {
                       isCompleted = false;
                     });

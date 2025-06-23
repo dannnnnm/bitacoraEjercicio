@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bitacora_ejercicios/model/weather.dart';
+import 'package:bitacora_ejercicios/exception/missing_location.dart';
+import 'package:bitacora_ejercicios/exception/weather_fetch_exception.dart';
+import 'package:bitacora_ejercicios/exception/weather_parse_exception.dart';
 
 class WeatherService {
   final http.Client client;
@@ -10,7 +13,7 @@ class WeatherService {
   Future<Map<String, dynamic>> fetchWeatherData(
       double? lat, double? lon, double? altitude) async {
     if (lat == null || lon == null) {
-      throw Exception('Latitud y longitud son requeridas');
+      throw MissingLocationException();
     }
 
     final url = Uri.parse(
@@ -25,7 +28,7 @@ class WeatherService {
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Error al obtener los datos: ${response.statusCode}');
+      throw WeatherFetchException(response.statusCode);
     }
 
     return jsonDecode(response.body) as Map<String, dynamic>;
@@ -34,7 +37,7 @@ class WeatherService {
   Weather parseTodayWeather(Map<String, dynamic> json) {
     final timeseries = json['properties']['timeseries'] as List;
     if (timeseries.isEmpty) {
-      throw Exception("No se encontraron datos de clima");
+      throw WeatherParseException("No hay datos del clima");
     }
 
     final today = DateTime.now().toLocal().day;
@@ -77,7 +80,7 @@ class WeatherService {
         maxTemp == null ||
         windSpeedKmh == null ||
         symbolCount.isEmpty) {
-      throw Exception("No se pudo determinar el clima del día");
+      throw WeatherParseException("No se pudo determinar el clima de hoy");
     }
 
     final mostFrequentSymbol = symbolCount.entries

@@ -8,14 +8,19 @@ class WeatherService {
   WeatherService({http.Client? client}) : client = client ?? http.Client();
 
   Future<Map<String, dynamic>> fetchWeatherData(
-      double lat, double lon, double altitude) async {
+      double? lat, double? lon, double? altitude) async {
+    if (lat == null || lon == null) {
+      throw Exception('Latitud y longitud son requeridas');
+    }
+
     final url = Uri.parse(
-        'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=$lat&lon=$lon&altitude=$altitude');
+      'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=$lat&lon=$lon&altitude=${altitude ?? 0}',
+    );
 
     final response = await client.get(
       url,
       headers: {
-        'User-Agent': 'bitacoraEjecicio/1.0 (contacto@gmail.com)',
+        'User-Agent': 'bitacoraEjercicio/1.0 (contacto@gmail.com)',
       },
     );
 

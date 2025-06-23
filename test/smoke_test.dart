@@ -36,4 +36,22 @@ void main() {
       });
     },
   );
+
+  testWidgets("Add activity screen has components", (WidgetTester tester) async{
+    await tester.runAsync(() async {
+      sqfliteFfiInit();
+      await DatabaseService.init(
+        customDB: await databaseFactoryFfi.openDatabase(":memory:"),
+      );
+        // Build our app and trigger a frame.
+      await tester.pumpWidget(const MyApp());
+      await tester.tap(find.byKey(newActivityFABKey));
+      await tester.pumpAndSettle(Duration(seconds: 2));
+      await tester.ensureVisible(find.byKey(newActivityNameKey));
+      expect(find.byKey(newActivityNameKey), findsOneWidget);
+      expect(find.byKey(newActivityDescriptionKey), findsOneWidget);
+      expect(find.byKey(newActivityCategoryKey), findsOneWidget);
+      expect(find.byKey(newActivityScoreKey), findsOneWidget);
+    });
+  });
 }

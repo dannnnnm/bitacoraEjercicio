@@ -67,6 +67,7 @@ class Addactivity extends StatelessWidget{
                     controller.selectedCategory.value = value;
                     controller.validateInput();
                   },
+                  key: newActivityCategoryKey,
                 ),
                 IconButton(
                   key: newCategoryButtonKey,

@@ -17,7 +17,7 @@ void main() {
       service = LocationService(mockGeolocator);
     });
 
-    test('devuelve una ubicación correcta', () async {
+    test('TRF32: Obtención exitosa de ubicación', () async {
       when(mockGeolocator.checkPermission())
           .thenAnswer((_) async => LocationPermission.always);
       when(mockGeolocator.getCurrentPosition(locationSettings: anyNamed('locationSettings')))
@@ -41,7 +41,7 @@ void main() {
       expect(location.altitude, 7.89);
     });
 
-    test('Seguridad: lanza exepción de permisos denegados', () async {
+    test('TRF33: Excepción de permisos denegados', () async {
       when(mockGeolocator.checkPermission())
           .thenAnswer((_) async => LocationPermission.denied);
       when(mockGeolocator.requestPermission())
@@ -55,7 +55,7 @@ void main() {
       verifyNever(mockGeolocator.getCurrentPosition(locationSettings: anyNamed('locationSettings')));
     });
 
-    test('Seguridad: lanza exepción de permisos denegados en configuración del dispositivo', () async {
+    test('TRF34: Excepción de permisos denegados en configuración del dispositivo', () async {
       when(mockGeolocator.checkPermission())
           .thenAnswer((_) async => LocationPermission.deniedForever);
 

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bitacora_ejercicios/exception/weather_fetch_exception.dart';
 import 'package:bitacora_ejercicios/model/weather.dart';
 import 'package:bitacora_ejercicios/service/weather/weather_service.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -61,46 +62,58 @@ void main() {
       service = WeatherService(client: mockClient);
     });
 
-    test('Devuelve datos válidos con altitud', () async {
-      final result = await service.fetchWeatherData(-38.81, -72.60, 100);
-      expect(result, isA<Map<String, dynamic>>());
-      expect(result['properties'], isNotNull);
-    });
-
-    test('Devuelve datos válidos sin altitud', () async {
-      final result = await service.fetchWeatherData(-38.81, -72.60, 0);
-      expect(result, isA<Map<String, dynamic>>());
-    });
-
-    test('Falla sin latitud', () async {
-      await expectLater(
-        service.fetchWeatherData(null, 10.0, 0),
-        throwsException,
-      );
-    });
-
-    test('Falla sin longitud', () async {
-      await expectLater(
-        service.fetchWeatherData(10.0, null, 0),
-        throwsException,
-      );
-    });
-
-    test('Falla sin latitud y longitud', () async {
-      await expectLater(
-        service.fetchWeatherData(null, null, 0),
-        throwsException,
-      );
-    });
-
-    test('Devuelve modelo Weather válido', () {
+    test('TRF35: Devuelve modelo Weather válido', () {
       final weather = service.parseTodayWeather(mockApiResponse);
       expect(weather, isA<Weather>());
       expect(weather.weatherStatus, equals('clearsky'));
       expect(weather.currentTemperatureCelsius, 10.0);
     });
 
-    test('Lanza excepción si no hay timeseries', () {
+    test('TRF36: Falla cuando el servidor devuelve un código no 200', () async {
+      mockClient = MockClient((request) async {
+        return http.Response('Internal Server Error', 500);
+      });
+      service = WeatherService(client: mockClient);
+
+      await expectLater(
+        service.fetchWeatherData(10.0, 20.0, 0),
+        throwsA(isA<WeatherFetchException>()),
+      );
+    });
+
+    test('TRF37: Devuelve datos válidos con altitud', () async {
+      final result = await service.fetchWeatherData(-38.81, -72.60, 100);
+      expect(result, isA<Map<String, dynamic>>());
+      expect(result['properties'], isNotNull);
+    });
+
+    test('TRF38: Devuelve datos válidos sin altitud', () async {
+      final result = await service.fetchWeatherData(-38.81, -72.60, 0);
+      expect(result, isA<Map<String, dynamic>>());
+    });
+
+    test('TRF39: Falla sin latitud', () async {
+      await expectLater(
+        service.fetchWeatherData(null, 10.0, 0),
+        throwsException,
+      );
+    });
+
+    test('TRF40: Falla sin longitud', () async {
+      await expectLater(
+        service.fetchWeatherData(10.0, null, 0),
+        throwsException,
+      );
+    });
+
+    test('TRF41: Falla sin latitud y longitud', () async {
+      await expectLater(
+        service.fetchWeatherData(null, null, 0),
+        throwsException,
+      );
+    });
+
+    test('TRF42: Lanza excepción si no hay timeseries', () {
       final emptyJson = {
         'properties': {
           'timeseries': []
@@ -109,7 +122,7 @@ void main() {
       expect(() => service.parseTodayWeather(emptyJson), throwsException);
     });
 
-    test('parseTodayWeather lanza excepción si no hay datos del día', () {
+    test('TRF43: Lanza excepción si no hay datos del día', () {
       final jsonSinHoy = {
         "properties": {
           "timeseries": [

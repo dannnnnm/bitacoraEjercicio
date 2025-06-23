@@ -10,7 +10,7 @@ import 'dart:convert';
 
 void main() {
   group('LocationService + WeatherService integración', () {
-    test('flujo completo: ubicación y clima', () async {
+    test('TRF44: Flujo completo ubicación y clima', () async {
 
       final mockGeolocator = _MockGeolocatorPlatform();
 
@@ -43,13 +43,11 @@ void main() {
       final locationService = LocationService(mockGeolocator);
       final weatherService = WeatherService(client: mockClient);
 
-      // Paso 1: obtener ubicación
       final Location location = await locationService.getCurrentLocation();
       expect(location.latitude, 1.23);
       expect(location.longitude, 4.56);
       expect(location.altitude, 7.89);
 
-      // Paso 2: obtener datos del clima
       final weatherJson = await weatherService.fetchWeatherData(
         location.latitude,
         location.longitude,
@@ -57,7 +55,6 @@ void main() {
       );
       expect(weatherJson['properties'], isNotNull);
 
-      // Paso 3: parsear modelo Weather
       final Weather weather = weatherService.parseTodayWeather(weatherJson);
       expect(weather.weatherStatus, equals('clearsky'));
       expect(weather.currentTemperatureCelsius, equals(10.0));

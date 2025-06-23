@@ -3,7 +3,9 @@ import 'package:bitacora_ejercicios/controller/main_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-const String newActivityFAB="newActivityFAB";
+const newActivityFABKey = Key("newActivityFAB");
+const actList = "actListKey";
+
 // ignore: must_be_immutable
 class MainScreen extends StatelessWidget {
   MainScreen({super.key});
@@ -15,7 +17,7 @@ class MainScreen extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        key: const Key(newActivityFAB),
+        key: newActivityFABKey,
         onPressed: () {
           controller.toAddActivity();
         },
@@ -25,15 +27,23 @@ class MainScreen extends StatelessWidget {
         title: const Text("Ejercicios"),
         backgroundColor: Get.theme.colorScheme.inversePrimary,
       ),
-      body: Obx(() => ListView(
-            padding: const EdgeInsets.all(16),
-            children: controller.activities
-                .map((activity) => Padding(
+      body: Obx(
+        () => ListView(
+          padding: const EdgeInsets.all(16),
+          children:
+              controller.activities
+                  .map(
+                    (activity) => Padding(
                       padding: const EdgeInsets.only(bottom: 12),
+                      key: Key(
+                        "$actList${controller.activities.indexOf(activity)}",
+                      ),
                       child: ActivityCard(activity: activity),
-                    ))
-                .toList(),
-          )),
+                    ),
+                  )
+                  .toList(),
+        ),
+      ),
     );
   }
 }

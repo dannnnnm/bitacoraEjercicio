@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class ActivityDetailScreen extends StatefulWidget {
   final Activity activity;
 
-  const ActivityDetailScreen({Key? key, required this.activity}) : super(key: key);
+  const ActivityDetailScreen({Key? key, required this.activity})
+    : super(key: key);
 
   @override
   State<ActivityDetailScreen> createState() => _ActivityDetailScreenState();
@@ -43,15 +44,17 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
                 Expanded(
                   child: Text(
                     activity.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 if (isCompleted)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.green[100],
                       borderRadius: BorderRadius.circular(20),
@@ -90,18 +93,20 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
             // Descripción
             Text(
               'Descripción',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
             Text(
               activity.description,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[700],
-                    height: 1.5,
-                  ),
+                color: Colors.grey[700],
+                height: 1.5,
+              ),
             ),
+            const SizedBox(height: 32),
+            Row(children: [Text("Categoria: "), Text(activity.category.name)]),
             const SizedBox(height: 32),
 
             // Botón marcar como completado
@@ -127,18 +132,23 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
                   );
                 },
                 icon: Icon(
-                  isCompleted ? Icons.check_circle : Icons.radio_button_unchecked,
+                  isCompleted
+                      ? Icons.check_circle
+                      : Icons.radio_button_unchecked,
                   size: 24,
                 ),
                 label: Text(
-                  isCompleted ? 'Actividad completada' : 'Marcar como realizada',
+                  isCompleted
+                      ? 'Actividad completada'
+                      : 'Marcar como realizada',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isCompleted ? Colors.green[600] : Colors.blue[600],
+                  backgroundColor:
+                      isCompleted ? Colors.green[600] : Colors.blue[600],
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -182,11 +192,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
             color: iconColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(24),
           ),
-          child: Icon(
-            icon,
-            color: iconColor,
-            size: 24,
-          ),
+          child: Icon(icon, color: iconColor, size: 24),
         ),
         const SizedBox(width: 16),
         Column(
@@ -203,10 +209,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
             const SizedBox(height: 2),
             Text(
               subtitle,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[600],
-              ),
+              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
             ),
           ],
         ),

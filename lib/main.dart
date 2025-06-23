@@ -1,9 +1,10 @@
 import 'package:bitacora_ejercicios/layout/home_layout.dart';
 import 'package:bitacora_ejercicios/service/database_service.dart';
+import 'package:convenient_test/convenient_test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() async{
+void main() async {
   await DatabaseService.init();
   runApp(const MyApp());
 }
@@ -13,13 +14,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Bitácora Ejercicios',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return ConvenientTestWrapperWidget(
+      child: GetMaterialApp(
+        title: 'Bitácora Ejercicios',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        home: HomeLayout(),
       ),
-      home: HomeLayout(), 
     );
   }
 }

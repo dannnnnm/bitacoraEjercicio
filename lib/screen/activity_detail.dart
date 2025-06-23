@@ -1,4 +1,5 @@
 import 'package:bitacora_ejercicios/model/activity.dart';
+import 'package:bitacora_ejercicios/repository/activity_repository.dart';
 import 'package:flutter/material.dart';
 
 class ActivityDetailScreen extends StatefulWidget {
@@ -114,9 +115,13 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
               width: double.infinity,
               height: 56,
               child: ElevatedButton.icon(
-                onPressed: () {
-                  setState(() {
+                onPressed: () async {
+                  activity.completed=true;
+
+                  await ActivityRepository().update(activity);
+                  setState(()  {
                     isCompleted = !isCompleted;
+                    
                   });
 
                   ScaffoldMessenger.of(context).showSnackBar(

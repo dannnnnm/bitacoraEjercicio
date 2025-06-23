@@ -16,9 +16,13 @@ void main() {
       await t.tester.pumpAndSettle(Duration(seconds: 2));
       var actName = "test ${DateTime.now().millisecondsSinceEpoch}";
       await t.tester.ensureVisible(find.byKey(newActivityFABKey));
+
+      //ir a la pantalla de agregar actividad
       await t.get(find.byKey(newActivityFABKey)).tap();
       await t.tester.pumpAndSettle(Duration(seconds: 2));
       await t.tester.ensureVisible(find.byKey(newActivityNameKey));
+
+      //rellenar datos
       await t
           .get(find.byKey(newActivityNameKey))
           .enterTextWithoutReplace(actName);
@@ -29,9 +33,12 @@ void main() {
           .get(find.byKey(newActivityScoreKey))
           .enterTextWithoutReplace("2.3");
 
+      //apretar boton para guardar
       await t.get(find.byKey(addActivityFABKey)).tap();
       await t.tester.pumpAndSettle(Duration(seconds: 2));
       await t.tester.ensureVisible(find.byKey(Key("${actList}0")));
+
+      //revisar que exista la entrada en la lista principal
       expect(find.text(actName), findsOneWidget);
     });
 
@@ -39,12 +46,17 @@ void main() {
       t,
     ) async {
       await t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      //generar nombres unicos
       var catName = "cat ${DateTime.now().millisecondsSinceEpoch}";
       var actName = "test ${DateTime.now().millisecondsSinceEpoch}";
+
+      //ir a crear actividad
       await t.tester.ensureVisible(find.byKey(newActivityFABKey));
       await t.get(find.byKey(newActivityFABKey)).tap();
       await t.tester.pumpAndSettle(Duration(seconds: 2));
       await t.tester.ensureVisible(find.byKey(newActivityNameKey));
+      //rellenar datos
       await t
           .get(find.byKey(newActivityNameKey))
           .enterTextWithoutReplace(actName);
@@ -52,6 +64,7 @@ void main() {
           .get(find.byKey(newActivityDescriptionKey))
           .enterTextWithoutReplace("some description");
 
+      //abrir panel de crear nueva categoria, rellenar datos y guardar
       await t.get(find.byKey(newCategoryButtonKey)).tap();
       await t
           .get(find.byKey(newCategoryNameKey))
@@ -62,14 +75,18 @@ void main() {
       await t
           .get(find.byKey(newActivityScoreKey))
           .enterTextWithoutReplace("2.3");
-
+      //guardar nueva actividad
       await t.get(find.byKey(addActivityFABKey)).tap();
       await t.tester.pumpAndSettle(Duration(seconds: 2));
       await t.tester.ensureVisible(find.byKey(Key("${actList}0")));
+
+      //entrar al detalle de la actividad
       await find.text(actName).tap();
+
       await t.tester.pumpAndSettle(Duration(seconds: 2));
       //await t.tester.ensureVisible(find.byKey(newActivityNameKey));
 
+      //verificar categoria
       expect(find.text(catName), findsOneWidget);
     });
   });

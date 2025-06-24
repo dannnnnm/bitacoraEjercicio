@@ -2,6 +2,7 @@ import 'package:bitacora_ejercicios/main.dart';
 import 'package:bitacora_ejercicios/main.dart' as app;
 import 'package:bitacora_ejercicios/model/category.dart';
 import 'package:bitacora_ejercicios/repository/category_repository.dart';
+import 'package:bitacora_ejercicios/screen/activity_detail.dart';
 import 'package:bitacora_ejercicios/screen/add_activity.dart';
 import 'package:bitacora_ejercicios/screen/main_screen.dart';
 import 'package:convenient_test_dev/convenient_test_dev.dart';
@@ -88,6 +89,38 @@ void main() {
 
       //verificar categoria
       expect(find.text(catName), findsOneWidget);
+    });
+
+    tTestWidgets("Agregar actividad funciona creando nueva categoria", (
+      t,
+    ) async {
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      //generar nombres unicos
+
+      //ir a crear actividad
+      var foundEntry=await find.textContaining("test").first;
+      await foundEntry.tap();
+
+      t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      var finder=find.byKey(markCompletedKey);
+      var button=t.tester.widget<ElevatedButton>(finder);
+      var style=button.style!;
+      var originalIsCompleted=style.backgroundColor!.resolve(<WidgetState>{})==Colors.green[600];
+      await finder.tap();
+      find.byIcon(Icons.arrow_back).tap();
+
+      t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      await foundEntry.tap();
+
+      t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      var nbutton=t.tester.widget<ElevatedButton>(finder);
+      var nstyle=nbutton.style!;
+      var persistedIsCompleted=nstyle.backgroundColor!.resolve(<WidgetState>{})==Colors.green[600];
+      expect(persistedIsCompleted, isNot(originalIsCompleted));
     });
   });
 }

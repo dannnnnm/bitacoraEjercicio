@@ -2,6 +2,10 @@ import 'package:bitacora_ejercicios/model/activity.dart';
 import 'package:bitacora_ejercicios/repository/activity_repository.dart';
 import 'package:flutter/material.dart';
 
+const markCompletedKey=Key("markCompleted");
+const unmarkKey=Key("unmark");
+
+
 class ActivityDetailScreen extends StatefulWidget {
   final Activity activity;
 
@@ -160,6 +164,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
                   ),
                   elevation: 2,
                 ),
+                key: markCompletedKey,
               ),
             ),
 

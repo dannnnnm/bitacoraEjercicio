@@ -91,35 +91,39 @@ void main() {
       expect(find.text(catName), findsOneWidget);
     });
 
-    tTestWidgets("Agregar actividad funciona creando nueva categoria", (
-      t,
-    ) async {
+    tTestWidgets("Marcar actividad persiste", (t) async {
       await t.tester.pumpAndSettle(Duration(seconds: 2));
 
       //generar nombres unicos
 
       //ir a crear actividad
-      var foundEntry=await find.textContaining("test").first;
+      var foundEntry = await find.textContaining("test").first;
       await foundEntry.tap();
 
-      t.tester.pumpAndSettle(Duration(seconds: 2));
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
 
-      var finder=find.byKey(markCompletedKey);
-      var button=t.tester.widget<ElevatedButton>(finder);
-      var style=button.style!;
-      var originalIsCompleted=style.backgroundColor!.resolve(<WidgetState>{})==Colors.green[600];
+      var finder = find.byKey(markCompletedKey);
+      var button = t.tester.widget<ElevatedButton>(finder);
+      var style = button.style!;
+      var originalIsCompleted =
+          style.backgroundColor!.resolve(<WidgetState>{}) == Colors.green[600];
       await finder.tap();
-      find.byIcon(Icons.arrow_back).tap();
 
-      t.tester.pumpAndSettle(Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 4));
+      await find.byIcon(Icons.arrow_back).tap();
 
-      await foundEntry.tap();
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
 
-      t.tester.pumpAndSettle(Duration(seconds: 2));
+      var nfoundEntry = await find.textContaining("test").first;
+      await nfoundEntry.tap();
 
-      var nbutton=t.tester.widget<ElevatedButton>(finder);
-      var nstyle=nbutton.style!;
-      var persistedIsCompleted=nstyle.backgroundColor!.resolve(<WidgetState>{})==Colors.green[600];
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      var nfinder = find.byKey(markCompletedKey);
+      var nbutton = t.tester.widget<ElevatedButton>(nfinder);
+      var nstyle = nbutton.style!;
+      var persistedIsCompleted =
+          nstyle.backgroundColor!.resolve(<WidgetState>{}) == Colors.green[600];
       expect(persistedIsCompleted, isNot(originalIsCompleted));
     });
   });

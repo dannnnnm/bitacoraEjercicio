@@ -2,9 +2,8 @@ import 'package:bitacora_ejercicios/model/activity.dart';
 import 'package:bitacora_ejercicios/repository/activity_repository.dart';
 import 'package:flutter/material.dart';
 
-const markCompletedKey=Key("markCompleted");
-const unmarkKey=Key("unmark");
-
+const markCompletedKey = Key("markCompleted");
+const unmarkKey = Key("unmark");
 
 class ActivityDetailScreen extends StatefulWidget {
   final Activity activity;
@@ -120,12 +119,11 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
               height: 56,
               child: ElevatedButton.icon(
                 onPressed: () async {
-                  activity.completed=true;
+                  activity.completed = !isCompleted;
 
                   await ActivityRepository().update(activity);
-                  setState(()  {
+                  setState(() {
                     isCompleted = !isCompleted;
-                    
                   });
 
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -173,7 +171,7 @@ class _ActivityDetailScreenState extends State<ActivityDetailScreen> {
               Center(
                 child: TextButton(
                   onPressed: () async {
-                    activity.completed=false;
+                    activity.completed = false;
 
                     await ActivityRepository().saveOne(activity);
                     setState(() {

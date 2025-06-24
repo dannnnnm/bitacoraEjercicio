@@ -57,6 +57,7 @@ class AddActivityController extends GetxController {
       Get.delete<MainScreenController>();
       Get.offAll(() => MainScreen());
     } catch (e) {
+      print("Saveing eer ${e.toString()}");
       Get.snackbar(
         "Error de guardado",
         "Error al guardar debido a ${e.toString()}",

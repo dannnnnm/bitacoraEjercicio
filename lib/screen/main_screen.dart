@@ -9,11 +9,11 @@ const actList = "actListKey";
 // ignore: must_be_immutable
 class MainScreen extends StatelessWidget {
   MainScreen({super.key});
-  final MainScreenController controller = MainScreenController();
+  //final MainScreenController controller = MainScreenController();
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(this.controller);
+    final controller = Get.put(MainScreenController());
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(

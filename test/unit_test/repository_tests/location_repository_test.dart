@@ -47,15 +47,15 @@ void main() {
   });
 
   test("guardar 1 agrega id", () async {
-    Location location = Location(latitude: 20.0014, longitude: 23.45354);
+    Location location = Location(latitude: 20.0014, longitude: 23.45354, altitude: 100.0);
     location.activityID = 1;
     var saved = await locationRepository.saveOne(location);
     expect(saved.id, isNot(0));
   });
 
   test("guardar 2 incrementa id", () async {
-    Location location = Location(latitude: 20.0014, longitude: 23.45354);
-    Location location2 = Location(latitude: 204.0014, longitude: 3.45354);
+    Location location = Location(latitude: 20.0014, longitude: 23.45354, altitude: 100.0);
+    Location location2 = Location(latitude: 204.0014, longitude: 3.45354, altitude: 100.0);
     location.activityID = 1;
     location2.activityID = 2;
     var saved = await locationRepository.saveOne(location);
@@ -64,8 +64,8 @@ void main() {
   });
 
   test("guardar 2 guarda datos distintos", () async {
-    Location location = Location(latitude: 20.0014, longitude: 23.45354);
-    Location location2 = Location(latitude: 204.0014, longitude: 3.45354);
+    Location location = Location(latitude: 20.0014, longitude: 23.45354, altitude: 110.0);
+    Location location2 = Location(latitude: 204.0014, longitude: 3.45354, altitude: 110.0);
     location.activityID = 1;
     location2.activityID = 2;
     var saved = await locationRepository.saveOne(location);
@@ -74,7 +74,7 @@ void main() {
   });
 
   test("guardar mantiene los datos", () async {
-    Location location = Location(latitude: 20.0014, longitude: 23.45354);
+    Location location = Location(latitude: 20.0014, longitude: 23.45354, altitude: 110.0);
     location.activityID = 1;
     var saved = await locationRepository.saveOne(location);
     var savedJson = saved.toJson();
@@ -83,7 +83,7 @@ void main() {
   });
 
   test("actualizar mantiene los datos", () async {
-    Location location = Location(latitude: 20.0014, longitude: 23.45354);
+    Location location = Location(latitude: 20.0014, longitude: 23.45354, altitude: 110.0);
     location.activityID = 1;
     var saved = await locationRepository.saveOne(location);
     saved.longitude=0.1;

@@ -30,7 +30,7 @@ void main(){
     Activity activity = Activity(
       "Caminar",
       "Salir a caminar",
-      Location(latitude: 0.21, longitude: 0.22),
+      Location(latitude: 0.21, longitude: 0.22, altitude: 110.0),
       Category("Piernas"),
       Weather.simple("RAINY", "Slightly rainy. Maybe frogs", 10.6),
       35.0,
@@ -54,7 +54,7 @@ void main(){
     Activity activity = Activity(
       "Caminar",
       "Salir a caminar",
-      Location(latitude: 0.21, longitude: 0.22),
+      Location(latitude: 0.21, longitude: 0.22, altitude: 110.0),
       Category("Piernas"),
       Weather.simple("RAINY", "Slightly rainy. Maybe frogs", 10.6),
       35.0,
@@ -75,7 +75,7 @@ void main(){
     Activity activity = Activity(
       "Caminar",
       "Salir a caminar",
-      Location(latitude: 0.21, longitude: 0.22),
+      Location(latitude: 0.21, longitude: 0.22, altitude: 110.0),
       Category("Piernas"),
       Weather.simple("RAINY", "Slightly rainy. Maybe frogs", 10.6),
       35.0,
@@ -84,7 +84,7 @@ void main(){
     Activity activity2 = Activity(
       "Correr",
       "Salir a correr",
-      Location(latitude: 5.21, longitude: 0.232),
+      Location(latitude: 5.21, longitude: 0.232, altitude: 110.0),
       Category("Piernas"),
       Weather.simple("RAINY", "Slightly rainy. Maybe frogs", 10.2),
       36.0,
@@ -101,7 +101,7 @@ void main(){
     Activity activity = Activity(
       "Caminar",
       "Salir a caminar",
-      Location(latitude: 0.21, longitude: 0.22),
+      Location(latitude: 0.21, longitude: 0.22, altitude: 110.0),
       Category("Piernas"),
       Weather.simple("RAINY", "Slightly rainy. Maybe frogs", 10.6),
       35.0,
@@ -110,7 +110,7 @@ void main(){
     Activity activity2 = Activity(
       "Correr",
       "Salir a correr",
-      Location(latitude: 5.21, longitude: 0.232),
+      Location(latitude: 5.21, longitude: 0.232, altitude: 110.0),
       Category("Piernas"),
       Weather.simple("RAINY", "Slightly rainy. Maybe frogs", 10.2),
       36.0,
@@ -132,7 +132,7 @@ void main(){
     Activity activity = Activity(
       "Caminar",
       "Salir a caminar",
-      Location(latitude: 0.21, longitude: 0.22),
+      Location(latitude: 0.21, longitude: 0.22, altitude: 110.0),
       Category("Piernas"),
       Weather.simple("RAINY", "Slightly rainy. Maybe frogs", 10.6),
       35.0,
@@ -150,7 +150,7 @@ void main(){
     Activity activity = Activity(
       "Caminar",
       "Salir a caminar",
-      Location(latitude: 0.21, longitude: 0.22),
+      Location(latitude: 0.21, longitude: 0.22, altitude: 110.0),
       Category("Piernas"),
       Weather.simple("RAINY", "Slightly rainy. Maybe frogs", 10.6),
       35.0,

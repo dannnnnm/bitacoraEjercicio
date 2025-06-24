@@ -25,8 +25,8 @@ class MainScreenController extends GetxController{
   void _loadActivities(){
     var mockLoadActivities=Future.delayed(Duration(seconds: 2), () async{
       activities.addAll([
-        Activity("Correr", "Salir a correr al cerro Ñielol",Location(latitude: 0.0, longitude: 0.0), Category("a"),Weather.simple("RAINY","literally a blibical flood",32),10.0),
-        Activity("Nadar", "Nadar en la piscina de la UFRO",Location(latitude: 0.0, longitude: 0.0), Category("a"),Weather.simple("RAINY","literally a blibical flood",32),10.0)
+        Activity("Correr", "Salir a correr al cerro Ñielol",Location(latitude: 0.0, longitude: 0.0, altitude: 0.0), Category("a"),Weather.simple("RAINY","literally a blibical flood",32),10.0),
+        Activity("Nadar", "Nadar en la piscina de la UFRO",Location(latitude: 0.0, longitude: 0.0, altitude: 0.0), Category("a"),Weather.simple("RAINY","literally a blibical flood",32),10.0)
       ]);
       activities.refresh();
     });

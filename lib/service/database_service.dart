@@ -13,16 +13,16 @@ class DatabaseService {
 
     if (customDB == null) {
       Directory dbDir;
-      if (!Platform.isAndroid){
+      if (!Platform.isAndroid) {
         sqfliteFfiInit();
-        dbDir=(await getApplicationDocumentsDirectory())!;
-        _client = await databaseFactoryFfi.openDatabase("${dbDir.path}/$dbName");
-      }
-      else{
-        dbDir= (await getExternalStorageDirectory())!;
+        dbDir = (await getApplicationDocumentsDirectory())!;
+        _client = await databaseFactoryFfi.openDatabase(
+          "${dbDir.path}/$dbName",
+        );
+      } else {
+        dbDir = (await getExternalStorageDirectory())!;
         _client = await openDatabase("${dbDir.path}/$dbName");
       }
-      
     } else {
       _client = customDB;
     }
@@ -51,6 +51,7 @@ class DatabaseService {
       """CREATE TABLE IF NOT EXISTS location(id integer primary key, 
                                                                     latitude real, 
                                                                       longitude real,
+                                                                      altitude real,
                                                                         activity_id integer,
                                                                           FOREIGN KEY(activity_id) references activity(id))""",
     );

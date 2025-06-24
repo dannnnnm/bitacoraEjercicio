@@ -127,12 +127,11 @@ void main() {
       expect(persistedIsCompleted, isNot(originalIsCompleted));
     });
 
-    tTestWidgets("Eliminar actividad es persistente", (t) async {
+    tTestWidgets("[No implementado] Eliminar actividad es persistente", (
+      t,
+    ) async {
       await t.tester.pumpAndSettle(Duration(seconds: 2));
 
-      //generar nombres unicos
-
-      //ir a crear actividad
       var foundEntry = await find.textContaining("test").first;
       var fullName = foundEntry.toString();
       await foundEntry.tap();
@@ -154,12 +153,11 @@ void main() {
       expect(nfoundEntry, findsNothing);
     });
 
-    tTestWidgets("Eliminar actividad es persistente", (t) async {
+    tTestWidgets("[No implementado] Editar actividad es persistente", (
+      t,
+    ) async {
       await t.tester.pumpAndSettle(Duration(seconds: 2));
 
-      //generar nombres unicos
-
-      //ir a crear actividad
       var foundEntry = await find.textContaining("test").first;
       var fullName = foundEntry.toString();
       await foundEntry.tap();

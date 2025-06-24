@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">11</td>
-            <td class="headerCovTableEntry">17</td>
-            <td class="headerCovTableEntryLo">64.7 %</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntryLo">61.1 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">Mon Jun 23 22:44:22 2025</td>
+            <td class="headerValue">Mon Jun 23 23:32:27 2025</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -75,16 +75,16 @@
 <a name="13"><span class="lineNum">      13 </span>            : </a>
 <a name="14"><span class="lineNum">      14 </span>            :     if (customDB == null) {</a>
 <a name="15"><span class="lineNum">      15 </span>            :       Directory dbDir;</a>
-<a name="16"><span class="lineNum">      16 </span><span class="lineNoCov">          0 :       if (!Platform.isAndroid){</span></a>
+<a name="16"><span class="lineNum">      16 </span><span class="lineNoCov">          0 :       if (!Platform.isAndroid) {</span></a>
 <a name="17"><span class="lineNum">      17 </span><span class="lineNoCov">          0 :         sqfliteFfiInit();</span></a>
-<a name="18"><span class="lineNum">      18 </span><span class="lineNoCov">          0 :         dbDir=(await getApplicationDocumentsDirectory())!;</span></a>
-<a name="19"><span class="lineNum">      19 </span><span class="lineNoCov">          0 :         _client = await databaseFactoryFfi.openDatabase(&quot;${dbDir.path}/$dbName&quot;);</span></a>
-<a name="20"><span class="lineNum">      20 </span>            :       }</a>
-<a name="21"><span class="lineNum">      21 </span>            :       else{</a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineNoCov">          0 :         dbDir= (await getExternalStorageDirectory())!;</span></a>
-<a name="23"><span class="lineNum">      23 </span><span class="lineNoCov">          0 :         _client = await openDatabase(&quot;${dbDir.path}/$dbName&quot;);</span></a>
-<a name="24"><span class="lineNum">      24 </span>            :       }</a>
-<a name="25"><span class="lineNum">      25 </span>            :       </a>
+<a name="18"><span class="lineNum">      18 </span><span class="lineNoCov">          0 :         dbDir = (await getApplicationDocumentsDirectory())!;</span></a>
+<a name="19"><span class="lineNum">      19 </span><span class="lineNoCov">          0 :         _client = await databaseFactoryFfi.openDatabase(</span></a>
+<a name="20"><span class="lineNum">      20 </span><span class="lineNoCov">          0 :           &quot;${dbDir.path}/$dbName&quot;,</span></a>
+<a name="21"><span class="lineNum">      21 </span>            :         );</a>
+<a name="22"><span class="lineNum">      22 </span>            :       } else {</a>
+<a name="23"><span class="lineNum">      23 </span><span class="lineNoCov">          0 :         dbDir = (await getExternalStorageDirectory())!;</span></a>
+<a name="24"><span class="lineNum">      24 </span><span class="lineNoCov">          0 :         _client = await openDatabase(&quot;${dbDir.path}/$dbName&quot;);</span></a>
+<a name="25"><span class="lineNum">      25 </span>            :       }</a>
 <a name="26"><span class="lineNum">      26 </span>            :     } else {</a>
 <a name="27"><span class="lineNum">      27 </span>            :       _client = customDB;</a>
 <a name="28"><span class="lineNum">      28 </span>            :     }</a>
@@ -113,34 +113,35 @@
 <a name="51"><span class="lineNum">      51 </span>            :       &quot;&quot;&quot;CREATE TABLE IF NOT EXISTS location(id integer primary key, </a>
 <a name="52"><span class="lineNum">      52 </span>            :                                                                     latitude real, </a>
 <a name="53"><span class="lineNum">      53 </span>            :                                                                       longitude real,</a>
-<a name="54"><span class="lineNum">      54 </span>            :                                                                         activity_id integer,</a>
-<a name="55"><span class="lineNum">      55 </span>            :                                                                           FOREIGN KEY(activity_id) references activity(id))&quot;&quot;&quot;,</a>
-<a name="56"><span class="lineNum">      56 </span>            :     );</a>
-<a name="57"><span class="lineNum">      57 </span>            : </a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         12 :     _client.execute(</span></a>
-<a name="59"><span class="lineNum">      59 </span>            :       &quot;&quot;&quot;CREATE TABLE IF NOT EXISTS evidence(id integer primary key, </a>
-<a name="60"><span class="lineNum">      60 </span>            :                                                             image_bytes blob,</a>
-<a name="61"><span class="lineNum">      61 </span>            :                                                               activity_id integer,</a>
-<a name="62"><span class="lineNum">      62 </span>            :                                                                 FOREIGN KEY(activity_id) references activity(id))&quot;&quot;&quot;,</a>
-<a name="63"><span class="lineNum">      63 </span>            :     );</a>
-<a name="64"><span class="lineNum">      64 </span>            : </a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         12 :     _client.execute(</span></a>
-<a name="66"><span class="lineNum">      66 </span>            :       &quot;&quot;&quot;CREATE TABLE IF NOT EXISTS weather(id integer primary key,</a>
-<a name="67"><span class="lineNum">      67 </span>            :                                                             status text NOT NULL,</a>
-<a name="68"><span class="lineNum">      68 </span>            :                                                               description text NOY NULL,</a>
-<a name="69"><span class="lineNum">      69 </span>            :                                                                 current_temperature real NOT NULL,</a>
-<a name="70"><span class="lineNum">      70 </span>            :                                                                   max_temperature real,</a>
-<a name="71"><span class="lineNum">      71 </span>            :                                                                     min_temperature real,</a>
-<a name="72"><span class="lineNum">      72 </span>            :                                                                       wind_speed integer,</a>
-<a name="73"><span class="lineNum">      73 </span>            :                                                                         activity_id integer,</a>
-<a name="74"><span class="lineNum">      74 </span>            :                                                                         FOREIGN KEY(activity_id) references activity(id))&quot;&quot;&quot;,</a>
-<a name="75"><span class="lineNum">      75 </span>            :     );</a>
-<a name="76"><span class="lineNum">      76 </span>            :   }</a>
-<a name="77"><span class="lineNum">      77 </span>            : </a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">          6 :   static Database getDbClient() {</span></a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          6 :     return _client;</span></a>
-<a name="80"><span class="lineNum">      80 </span>            :   }</a>
-<a name="81"><span class="lineNum">      81 </span>            : }</a>
+<a name="54"><span class="lineNum">      54 </span>            :                                                                       altitude real,</a>
+<a name="55"><span class="lineNum">      55 </span>            :                                                                         activity_id integer,</a>
+<a name="56"><span class="lineNum">      56 </span>            :                                                                           FOREIGN KEY(activity_id) references activity(id))&quot;&quot;&quot;,</a>
+<a name="57"><span class="lineNum">      57 </span>            :     );</a>
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">         12 :     _client.execute(</span></a>
+<a name="60"><span class="lineNum">      60 </span>            :       &quot;&quot;&quot;CREATE TABLE IF NOT EXISTS evidence(id integer primary key, </a>
+<a name="61"><span class="lineNum">      61 </span>            :                                                             image_bytes blob,</a>
+<a name="62"><span class="lineNum">      62 </span>            :                                                               activity_id integer,</a>
+<a name="63"><span class="lineNum">      63 </span>            :                                                                 FOREIGN KEY(activity_id) references activity(id))&quot;&quot;&quot;,</a>
+<a name="64"><span class="lineNum">      64 </span>            :     );</a>
+<a name="65"><span class="lineNum">      65 </span>            : </a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         12 :     _client.execute(</span></a>
+<a name="67"><span class="lineNum">      67 </span>            :       &quot;&quot;&quot;CREATE TABLE IF NOT EXISTS weather(id integer primary key,</a>
+<a name="68"><span class="lineNum">      68 </span>            :                                                             status text NOT NULL,</a>
+<a name="69"><span class="lineNum">      69 </span>            :                                                               description text NOY NULL,</a>
+<a name="70"><span class="lineNum">      70 </span>            :                                                                 current_temperature real NOT NULL,</a>
+<a name="71"><span class="lineNum">      71 </span>            :                                                                   max_temperature real,</a>
+<a name="72"><span class="lineNum">      72 </span>            :                                                                     min_temperature real,</a>
+<a name="73"><span class="lineNum">      73 </span>            :                                                                       wind_speed integer,</a>
+<a name="74"><span class="lineNum">      74 </span>            :                                                                         activity_id integer,</a>
+<a name="75"><span class="lineNum">      75 </span>            :                                                                         FOREIGN KEY(activity_id) references activity(id))&quot;&quot;&quot;,</a>
+<a name="76"><span class="lineNum">      76 </span>            :     );</a>
+<a name="77"><span class="lineNum">      77 </span>            :   }</a>
+<a name="78"><span class="lineNum">      78 </span>            : </a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          6 :   static Database getDbClient() {</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">          6 :     return _client;</span></a>
+<a name="81"><span class="lineNum">      81 </span>            :   }</a>
+<a name="82"><span class="lineNum">      82 </span>            : }</a>
 </pre>
       </td>
     </tr>

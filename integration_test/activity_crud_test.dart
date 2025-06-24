@@ -36,7 +36,7 @@ void main() {
 
       //apretar boton para guardar
       await t.get(find.byKey(addActivityFABKey)).tap();
-      await t.tester.pumpAndSettle(Duration(seconds: 2));
+      await t.tester.pumpAndSettle(Duration(seconds: 3));
       await t.tester.ensureVisible(find.byKey(Key("${actList}0")));
 
       //revisar que exista la entrada en la lista principal
@@ -78,7 +78,7 @@ void main() {
           .enterTextWithoutReplace("2.3");
       //guardar nueva actividad
       await t.get(find.byKey(addActivityFABKey)).tap();
-      await t.tester.pumpAndSettle(Duration(seconds: 2));
+      await t.tester.pumpAndSettle(Duration(seconds: 3));
       await t.tester.ensureVisible(find.byKey(Key("${actList}0")));
 
       //entrar al detalle de la actividad
@@ -94,9 +94,8 @@ void main() {
     tTestWidgets("Marcar actividad persiste", (t) async {
       await t.tester.pumpAndSettle(Duration(seconds: 2));
 
-      //generar nombres unicos
-
-      //ir a crear actividad
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+      await t.tester.ensureVisible(find.byKey(Key("${actList}0")));
       var foundEntry = await find.textContaining("test").first;
       await foundEntry.tap();
 

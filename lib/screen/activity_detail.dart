@@ -4,6 +4,14 @@ import 'package:flutter/material.dart';
 
 const markCompletedKey = Key("markCompleted");
 const unmarkKey = Key("unmark");
+const deleteActivityKey = Key("deleteActivityKey");
+const confirmDeleteButton = Key("confirmDeleteButton");
+const cancelDeleteButton = Key("cancelDeleteButton");
+
+const editActivityKey = Key("editActivity");
+const confirmEditKey = Key("confirmEdit");
+
+const editActivityName = Key("editActivityName");
 
 class ActivityDetailScreen extends StatefulWidget {
   final Activity activity;

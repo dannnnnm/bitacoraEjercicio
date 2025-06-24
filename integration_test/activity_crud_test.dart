@@ -126,6 +126,68 @@ void main() {
           nstyle.backgroundColor!.resolve(<WidgetState>{}) == Colors.green[600];
       expect(persistedIsCompleted, isNot(originalIsCompleted));
     });
+
+    tTestWidgets("Eliminar actividad es persistente", (t) async {
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      //generar nombres unicos
+
+      //ir a crear actividad
+      var foundEntry = await find.textContaining("test").first;
+      var fullName = foundEntry.toString();
+      await foundEntry.tap();
+
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      var finder = find.byKey(deleteActivityKey);
+      await finder.tap();
+
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+      await find.byKey(confirmDeleteButton).tap();
+
+      await Future.delayed(Duration(seconds: 4));
+
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      var nfoundEntry = find.text(fullName);
+
+      expect(nfoundEntry, findsNothing);
+    });
+
+    tTestWidgets("Eliminar actividad es persistente", (t) async {
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      //generar nombres unicos
+
+      //ir a crear actividad
+      var foundEntry = await find.textContaining("test").first;
+      var fullName = foundEntry.toString();
+      await foundEntry.tap();
+
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      var finder = find.byKey(editActivityKey);
+      await finder.tap();
+
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      var newName = "new name ${DateTime.now().millisecondsSinceEpoch}";
+      await find.byKey(editActivityName).replaceText(newName);
+
+      await find.byKey(confirmEditKey).tap();
+
+      await Future.delayed(Duration(seconds: 4));
+
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      await find.byIcon(Icons.arrow_back).tap();
+      await t.tester.pumpAndSettle(Duration(seconds: 2));
+
+      var nfoundEntry = find.text(fullName);
+
+      expect(fullName, findsNothing);
+      expect(newName, findsOneWidget);
+    });
   });
 }
 
